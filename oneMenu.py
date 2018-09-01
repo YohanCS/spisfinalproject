@@ -7,7 +7,6 @@ import pandas as pd
 def oneMeal(meal):
     tempListOfItems = [] # contains items and prices and unicode chars
     listOfItems = [] # contains items and prices
-    oneMenu = [] # contains the items of only one menu
     listOfPrices = [] # contains only prices
 
     page = requests.get("https://hdh.ucsd.edu/DiningMenus/default.aspx?i=05")
