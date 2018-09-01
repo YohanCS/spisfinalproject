@@ -19,8 +19,6 @@ def oneMeal(meal):
     tempListOfItems = menuList.split("\n")
 
     for item in tempListOfItems:
-        if '(Pillows)' in item:
-            do nothing;
         if item == '':
             tempListOfItems = tempListOfItems[tempListOfItems.index(item) + 1:]
         else:
@@ -32,11 +30,12 @@ def oneMeal(meal):
     # adds only prices to listOfPrices and only items to editedListOfItems
     for item in listOfItems:
         if "$" in item:
-            price = item[item.index("$") + 1:item.index(')')]
+            price = item[item.index("$") + 1:]
+            price = price[:price.index(")")]
             listOfPrices.append(price)
         else:
             listOfPrices.append("N/A")
-
+            
     # creates a data frame (spreadsheet) with the items in the left column
     # and prices in the right column
     data = pd.DataFrame({
@@ -50,18 +49,17 @@ def oneMeal(meal):
     data["price_num"] = price_nums.astype('float64')
     averageDailyPrice = round(data["price_num"].mean(), 2)
 
-    print(averageDailyPrice)
-    print(data)
+    return averageDailyPrice
     
 meal = "lunch"
+averagePrice = 0
 
 if meal == "breakfast":
-    oneMeal(0)
+    averagePrice = oneMeal(0)
 elif meal == "lunch":
-    oneMeal(1)
+    averagePrice = oneMeal(1)
 elif meal == "dinner":
-    oneMeal(2)  
+    averagePrice = oneMeal(2)  
     
               
    
-
