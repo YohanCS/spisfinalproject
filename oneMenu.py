@@ -16,10 +16,18 @@ def oneMeal(meal):
 
     # finds the three meal menus and chooses one depending on the index
     # 0 = "breakfast", 1 = "lunch", and 2 = "dinner"
-    menuList = soup.find_all(class_="menuList")[meal].get_text()
+    menuList = soup.select(".menuList")[meal]
+
+    menuList = menuList.select("li")
+
+    # converts menuList from list <li> tags and html code to string
+    stringMenuList = ""
+    for item in menuList:
+        currentItem = item.get_text()
+        stringMenuList = stringMenuList + "\n" + currentItem
 
     # splits the string 
-    tempListOfItems = menuList.split("\n")
+    tempListOfItems = stringMenuList.split("\n")
 
     # replaces the unicode spaces with string spaces and adds item and price
     # to listOfItemsAndPrices
@@ -38,12 +46,16 @@ def oneMeal(meal):
             price = item[item.index("$") + 1:]
             price = price[:price.index(")")]
             listOfPrices.append(price)
+        else:
+            listOfPrices.append("N/A")
 
     # adds only items to listOfItems
     for item in listOfItemsAndPrices:
         if "$" in item:
             item = item[:item.index("$")]
             item = item[:-2]
+            listOfItems.append(item)
+        else:
             listOfItems.append(item)
             
     # creates a data frame (spreadsheet) with the items in the left column
@@ -55,14 +67,14 @@ def oneMeal(meal):
 
     # extracts the prices per item so that we can find the average price
     # but this loses accuracy because of the \d character
-    price_nums = data["price"].str.extract("(?P<price_num>\d+)")
-    data["price_num"] = price_nums.astype('float64')
-    averageDailyPrice = round(data["price_num"].mean(), 2)
+    price = data["price"].str.extract("(?P<price_num>\d+)")
+    data["price"] = price.astype('float64')
+    averageDailyPrice = round(data["price"].mean(), 2)
 
     print(data)
     return averageDailyPrice
     
-meal = "lunch"
+meal = "breakfast"
 averagePrice = 0
 
 if meal == "breakfast":
