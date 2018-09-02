@@ -10,12 +10,18 @@ app = Flask(__name__)
 
 
 @app.route('/')
-def render_main():
-    x = oneMeal('breakfast')
-    return render_template('home.html', data=x.to_html())
+def render_home():
+    return render_template('home.html')
 
-@app.route('/result'):
-    return render_template('result.html')
+@app.route('/result')
+def render_result():
+    try: 
+        x = oneMeal(request.args["meal"])
+        return render_template('result.html', data=x.to_html())
+    except:
+        return "Sorry, something went wrong."
+
+    
     
 #running it and using the port
 if __name__=="__main__":

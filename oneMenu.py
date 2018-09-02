@@ -5,11 +5,11 @@ import pandas as pd
 # define this all as a function that obtains the average price and calories
 # per meal per dining hall in a list/tuple
 def oneMeal(meal):
-    if meal == "breakfast":
+    if meal == "Breakfast":
         meal = 0 
-    elif meal == "lunch":
+    elif meal == "Lunch":
         meal = 1
-    elif meal == "dinner":
+    elif meal == "Dinner":
         meal = 2
     
     tempListOfItems = [] # contains items and prices and unicode chars
