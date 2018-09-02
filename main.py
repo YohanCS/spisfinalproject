@@ -17,7 +17,7 @@ def render_home():
 def render_result():
     try: 
         x = oneMeal(request.args["meal"])
-        return render_template('result.html', data=x.to_html())
+        return render_template('result.html', data=x.to_html()
     except:
         return "Sorry, something went wrong."
 
@@ -25,4 +25,4 @@ def render_result():
     
 #running it and using the port
 if __name__=="__main__":
-    app.run(debug=False, port=54390)
+    app.run(debug=False, port=54400)
