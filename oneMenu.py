@@ -5,6 +5,13 @@ import pandas as pd
 # define this all as a function that obtains the average price and calories
 # per meal per dining hall in a list/tuple
 def oneMeal(meal):
+    if meal == "breakfast":
+        meal = 0 
+    elif meal == "lunch":
+        meal = 1
+    elif meal == "dinner":
+        meal = 2
+    
     tempListOfItems = [] # contains items and prices and unicode chars
     listOfItemsAndPrices = [] # contains items and prices
     listOfItems = [] # contains only items
@@ -70,17 +77,9 @@ def oneMeal(meal):
     data["price"] = price.astype('float64')
     averageDailyPrice = round(data["price"].mean(), 2)
 
-    return averageDailyPrice
-    
-meal = "lunch"
-averagePrice = 0
+    return data
 
-if meal == "breakfast":
-    averagePrice = oneMeal(0)
-elif meal == "lunch":
-    averagePrice = oneMeal(1)
-elif meal == "dinner":
-    averagePrice = oneMeal(2)  
-    
+
+
               
    
