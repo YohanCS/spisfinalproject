@@ -5,9 +5,5 @@
 {% block content %}
     <h1>Marshall Dining Hall</h1>
   
-    <form action="/result">
-        Specify breakfast, lunch, or dinoer: <br>
-        <input type="text" name="meal" value="lunch">
-        <input type="submit" value="Submit">
-    </form>
+    {{ data | safe }} 
 {% endblock %}
