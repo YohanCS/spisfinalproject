@@ -66,15 +66,13 @@ def oneMeal(meal):
         })
 
     # extracts the prices per item so that we can find the average price
-    # but this loses accuracy because of the \d character
-    price = data["price"].str.extract("(?P<price_num>\d+)")
+    price = data["price"].str.extract("(?P<price_num>\d+.\d+)")
     data["price"] = price.astype('float64')
     averageDailyPrice = round(data["price"].mean(), 2)
 
-    print(data)
     return averageDailyPrice
     
-meal = "breakfast"
+meal = "lunch"
 averagePrice = 0
 
 if meal == "breakfast":
