@@ -15,9 +15,9 @@ def render_home():
 
 @app.route('/result')
 def render_result():
-    try: 
+    try:
         x = oneMeal(request.args["meal"])
-        return render_template('result.html', data=x.to_html()
+        return render_template('result.html', data=x.to_html())
     except:
         return "Sorry, something went wrong."
 
