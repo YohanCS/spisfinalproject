@@ -59,16 +59,15 @@ def oneMeal(meal, hall):
             #find digits in the string calories 
             # https://stackoverflow.com/questions/4289331/python-extract-numbers-from-a-string
             caloriesNumber = re.findall(r'\d+', calories) 
-            listOfCalories.append(caloriesNumber[0])
+            listOfCalories.append(caloriesNumber[0]) #we need to convert the list of size 1 we get from re.findall to just a string value
 
             #time to add protein
             itemNutrition = newsoup.find(id="tblNutritionDetails") #id for nutrition table
             nutritionLines = itemNutrition.select('td') #select all the table tags with info
             protein = nutritionLines[18].get_text()  #get the text from the 19th element which has protein
-            proteinNumber = re.findall(r'\d+\.\d+', protein) # https://stackoverflow.com/questions/4703390/how-to-extract-a-floating-number-from-a-string
-            print(proteinNumber)
+            proteinNumber = protein[protein.index('n')+2: protein.index('g')] #
             listOfProtein.append(proteinNumber)
-    print(len(listOfProtein))
+    
     
 
     
@@ -113,7 +112,7 @@ def oneMeal(meal, hall):
                # listOfItems.append(item)
         #creating the third column, calories per dollar
         for x in range(len(listOfCalories)):
-            a = float(listOfCalories[x])/ float(listOfPrices[x])
+            a = round(float(listOfCalories[x])/ float(listOfPrices[x]))
             listOfCaloriesPerDollar.append(a)
                 
         # creates a data frame (spreadsheet) with the items in the left column
@@ -123,7 +122,8 @@ def oneMeal(meal, hall):
                 "item":listOfItems,
                 "price":listOfPrices,
                 "calories":listOfCalories,
-                "caloriesPerDollar":listOfCaloriesPerDollar
+                "caloriesPerDollar":listOfCaloriesPerDollar,
+                "protein":listOfProtein
             })
 
         # extracts the prices per item so that we can find the average price
@@ -136,13 +136,12 @@ def oneMeal(meal, hall):
         
         # data_ascending = data.sort_values('caloriesPerDollar')
         
-        #print( data)
+        return data
 
-   # else:
-       # return
+    else:
+        return
 
 
-oneMeal('Lunch', 'OVT')
 
    
 
