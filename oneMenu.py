@@ -17,6 +17,7 @@ def oneMeal(meal, hall):
     listOfPrices = [] # contains only prices
     listOfCalories = [] # contains only calories
     listOfCaloriesPerDollar = [] # calories divided by price
+    listOfProtein = [] #contains proteins
     diningHallPages = {
             "64Degrees":"64",
             "cafeV":"18",
@@ -57,9 +58,20 @@ def oneMeal(meal, hall):
             calories = list(itemHeader.children)[5].get_text() 
             #find digits in the string calories 
             # https://stackoverflow.com/questions/4289331/python-extract-numbers-from-a-string
-            caloriesnumber = re.findall(r'\d+', calories) 
-            listOfCalories.append(caloriesnumber[0])
+            caloriesNumber = re.findall(r'\d+', calories) 
+            listOfCalories.append(caloriesNumber[0])
 
+            #time to add protein
+            itemNutrition = newsoup.find(id="tblNutritionDetails") #id for nutrition table
+            nutritionLines = itemNutrition.select('td') #select all the table tags with info
+            protein = nutritionLines[18].get_text()  #get the text from the 19th element which has protein
+            proteinNumber = re.findall(r'\d+\.\d+', protein) # https://stackoverflow.com/questions/4703390/how-to-extract-a-floating-number-from-a-string
+            print(proteinNumber)
+            listOfProtein.append(proteinNumber)
+    print(len(listOfProtein))
+    
+
+    
     menuList = menuList.select("li")
 
     # converts menuList from list <li> tags and html code to string
@@ -124,13 +136,13 @@ def oneMeal(meal, hall):
         
         # data_ascending = data.sort_values('caloriesPerDollar')
         
-        return data
+        #print( data)
 
-    else:
-        return
+   # else:
+       # return
 
 
-
+oneMeal('Lunch', 'OVT')
 
    
 
