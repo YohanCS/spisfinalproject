@@ -19,8 +19,7 @@ def render_result():
         x = oneMeal(request.args["meal"])
         return render_template('result.html', data=x.to_html())
     except:
-        return "Sorry, something went wrong."
-
+        return render_template('error.html')
   
     
 #running it and using the port
