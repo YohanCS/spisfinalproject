@@ -1,0 +1,13 @@
+{% extends "layout.html" %}
+
+{% block title %}ERC Dining Hall{% endblock %}
+
+{% block content %}
+    <h1>Cafe Ventanas - Eleanor Roosevelt College</h1>
+  
+    <form action="/result_cafeV">
+        Specify Breakfast, Lunch, or Dinner: <br>
+        <input type="text" name="meal" value="Lunch">
+        <input type="submit" value="Submit">
+    </form>
+{% endblock %}

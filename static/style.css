@@ -1,11 +1,48 @@
-body {
-  background-color:#eef;
-  color:black;
+* {
+  margin: 0;
+  padding: 0;
 }
 
-.mystyle{
-  font-size: 20pt; 
+html, body {
+  height: 100%;
+}
+
+body {
+  background-color:#006A96;
+  color: black;
+  text-align: center;
+  clear: both;
+}
+
+.container {
+  min-height: 100%;
+}
+
+#main {
+  overflow: auto;
+  padding-bottom: 50px;
+}
+
+#footer {
+  background-color:#FFCD00;
+  position: relative;
+  height: 50px;
+  margin-top: -50px;
+  clear: both;
+}
+
+.mystyle {
+  font-size: 11pt; 
   font-family: Arial;
   border-collapse: collapse; 
   border: 1px solid silver;
+}
+
+table {
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.navbar-expand-lg {
+  background-color: #FFCD00;
 }

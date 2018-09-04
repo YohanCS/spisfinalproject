@@ -1,0 +1,10 @@
+{% extends "layout.html" %}
+
+{% block title %}Muir Dining Hall{% endblock %}
+
+{% block content %}
+    <h1>Pines - Muir College</h1>
+    <p>NaN means that the food item is a topping for another item</p>
+    {{ data | safe }}
+
+{% endblock %}
