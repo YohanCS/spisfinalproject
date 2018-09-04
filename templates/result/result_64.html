@@ -1,0 +1,10 @@
+{% extends "layout.html" %}
+
+{% block title %}Revelle Dining Hall{% endblock %}
+
+{% block content %}
+    <h1>64 Degrees - Revelle College</h1>
+    <p>NaN means that the food item is a topping for another item</p>
+    {{ data | safe }}
+
+{% endblock %}
