@@ -8,7 +8,7 @@ html, body {
 }
 
 body {
-  background-color:#006A96;
+  background-color: lightblue;
   color: black;
   text-align: center;
   clear: both;
@@ -39,10 +39,26 @@ body {
 }
 
 table {
+  color: #333; /* lighten up font color */
+  font-family: Helvetica, Arial, sans-serif; /* Nicer font */
+  width: 640px;
+  border-collapse:
+  collapse; border-spacing= 0;
   margin-right: auto;
   margin-left: auto;
 }
 
+td, th {border: 1px solid #CCC; height: 30px; } /* Make cells a bit taller */
+th {
+    font-weight: bold;
+}
+td {
+    background:#FAFAFA
+    text-align: center;
+}
+tr {
+    color: black;
+}
 .navbar-expand-lg {
   background-color: #FFCD00;
 }
