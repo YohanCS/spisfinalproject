@@ -5,18 +5,27 @@ import requests
 import pandas as pd
 import numpy as np
 from oneMenu import oneMeal
+import os
 
+
+DININGHALL = os.path.join('static', 'Dininghalls') #for the one image - got help from https://stackoverflow.com/questions/46785507/python-flask-display-image-on-a-html-page
+
+                          
 app = Flask(__name__)
+app.config['UPLOAD_FOLDER'] = DININGHALL
 
 
 @app.route('/')
 def render_home():
-    return render_template('/home/home.html')
+    Dininghalls = os.path.join(app.config['UPLOAD_FOLDER'], 'Dininghalls.png')
+    return render_template('/home/home.html',Dininghalls=Dininghalls)
 
 # 64 Degrees
 @app.route('/home_64_Degrees')
 def render_home_64():
-    return render_template('/home/home_64_Degrees.html')
+    Dininghalls = os.path.join(app.config['UPLOAD_FOLDER'], 'Dininghalls.png')
+
+    return render_template('/home/home_64_Degrees.html',Dininghalls=Dininghalls)
 
 @app.route('/result_64')
 def render_result_64():
@@ -29,7 +38,9 @@ def render_result_64():
 # Cafe Ventanas
 @app.route('/home_cafeV')
 def render_home_cafeV():
-    return render_template('/home/home_cafeV.html')
+    Dininghalls = os.path.join(app.config['UPLOAD_FOLDER'], 'Dininghalls.png')
+
+    return render_template('/home/home_cafeV.html',Dininghalls=Dininghalls)
 
 @app.route('/result_cafeV')
 def render_result_cafeV():
@@ -42,7 +53,9 @@ def render_result_cafeV():
 # Canyon Vista
 @app.route('/home_canyonV')
 def render_home_canyonV():
-    return render_template('/home/home_canyonV.html')
+    Dininghalls = os.path.join(app.config['UPLOAD_FOLDER'], 'Dininghalls.png')
+
+    return render_template('/home/home_canyonV.html',Dininghalls=Dininghalls)
 
 @app.route('/result_canyonV')
 def render_result_canyonV():
@@ -55,7 +68,9 @@ def render_result_canyonV():
 # Foodworx
 @app.route('/home_Foodworx')
 def render_home_Foodworx():
-    return render_template('/home/home_Foodworx.html')
+    Dininghalls = os.path.join(app.config['UPLOAD_FOLDER'], 'Dininghalls.png')
+
+    return render_template('/home/home_Foodworx.html',Dininghalls=Dininghalls)
 
 @app.route('/result_Foodworx')
 def render_result_Foodworx():
@@ -68,7 +83,9 @@ def render_result_Foodworx():
 # OceanView Terrace
 @app.route('/home_OVT')
 def render_home_OVT():
-    return render_template('/home/home_OVT.html')
+    Dininghalls = os.path.join(app.config['UPLOAD_FOLDER'], 'Dininghalls.png')
+
+    return render_template('/home/home_OVT.html',Dininghalls=Dininghalls)
 
 @app.route('/result_OVT')
 def render_result_OVT():
@@ -81,7 +98,9 @@ def render_result_OVT():
 # Pines
 @app.route('/home_Pines')
 def render_home_Pines():
-    return render_template('/home/home_Pines.html')
+    Dininghalls = os.path.join(app.config['UPLOAD_FOLDER'], 'Dininghalls.png')
+
+    return render_template('/home/home_Pines.html',Dininghalls=Dininghalls)
 
 @app.route('/result_Pines')
 def render_result_Pines():
