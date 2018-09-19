@@ -14,7 +14,6 @@ DININGHALL = os.path.join('static', 'Dininghalls') #for the one image - got help
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = DININGHALL
 
-columns = ["Food Item", "Price", "Serving", "Calories Per Serving", "Calories Per Dollar", "Protein Per Serving"]
 
 @app.route('/')
 def render_home():
@@ -36,8 +35,7 @@ def render_result_64():
     except:
         return render_template('error.html')
 
-
-
+# Cafe Ventanas
 @app.route('/home_cafeV')
 def render_home_cafeV():
     Dininghalls = os.path.join(app.config['UPLOAD_FOLDER'], 'Dininghalls.png')
@@ -82,30 +80,22 @@ def render_result_Foodworx():
     except:
         return render_template('error.html')
 
-
-
+# OceanView Terrace
 @app.route('/home_OVT')
-def render_home_64():
+def render_home_OVT():
     Dininghalls = os.path.join(app.config['UPLOAD_FOLDER'], 'Dininghalls.png')
 
-    return render_template('/home/home_64_Degrees.html',Dininghalls=Dininghalls)
+    return render_template('/home/home_OVT.html',Dininghalls=Dininghalls)
 
 @app.route('/result_OVT')
 def render_result_OVT():
     try:
-        meal = request.args["meal"]
-        x = ""
-        if meal == "Breakfast":
-            x = pd.read_csv("/Users/christianjohnventura/Desktop/spis18/github/spisfinalproject2/menus/OVT/OVTBreakfast.csv", names=columns)
-        elif meal == "Lunch":
-            x = pd.read_csv("/Users/christianjohnventura/Desktop/spis18/github/spisfinalproject2/menus/OVT/OVTLunch.csv", names=columns)
-        elif meal == "Dinner":
-            x = pd.read_csv("/Users/christianjohnventura/Desktop/spis18/github/spisfinalproject2/menus/OVT/OVTDinner.csv", names=columns)
+        x = oneMeal(request.args["meal"], "OVT")
         return render_template('/result/result_OVT.html', data=x.to_html(classes="mystyle", justify="center"))
     except:
         return render_template('error.html')
 
-
+# Pines
 @app.route('/home_Pines')
 def render_home_Pines():
     Dininghalls = os.path.join(app.config['UPLOAD_FOLDER'], 'Dininghalls.png')

@@ -3,20 +3,38 @@ import requests
 import pandas as pd
 import re
 
+# define this all as a function that obtains the average price and calories
+# per meal per dining hall in a list/tuple
 def oneMeal(meal, hall):
     """ Obtains the items, prices, calories, and calories per meal per dining hall 
         and stores them in a pandas dataframe that can be displayed on a webpage
     """
+    
     
     tempListOfItems = [] # contains items and prices and unicode chars
     listOfItemsAndPrices = [] # contains items and prices
     listOfItems = [] # contains only items
     listOfPrices = [] # contains only prices
     listOfCalories = [] # contains only calories
-    listOfServings = [] # contains servings and unicode spaces
-    editedListOfServings = [] # contains only servings
     listOfCaloriesPerDollar = [] # calories divided by price
     listOfProtein = [] #contains proteins
+    diningHallPages = {
+            "64Degrees":"64",
+            "cafeV":"18",
+            "canyonV":"24",
+            "Foodworx":"11",
+            "OVT":"05",
+            "Pines":"01"
+    }
+    meals = {
+            "Breakfast":0,
+            "Lunch":1,
+            "Dinner":2
+    }
+
+    hall = diningHallPages[hall] # obtains the hall in ending url digits from dictionary
+
+    meal = meals[meal] # obtains the meal in index from the dictionary
 
     page = requests.get("https://hdh.ucsd.edu/DiningMenus/default.aspx?i=" + hall)
 
@@ -33,37 +51,26 @@ def oneMeal(meal, hall):
             totalstring = startstring + a['href'] # we need to add diningmenus/ to href link
             newpage = requests.get(totalstring) # download the page we get
             # create a html parser for page we downloaded
-            newsoup = BeautifulSoup(newpage.content, 'html.parser')
-
-            itemHeader = newsoup.find(id="tblFacts") # id for the table facts
-            facts = itemHeader.select('td')
-            serving = facts[1].get_text()
-            servingNumber = 1
-            if "EACH" in serving or "BOWL" in serving or "PORTN" in serving:
-                servingNumber = re.findall(r'\d+', serving)
-                servingNumber = float(servingNumber[0])
-
-            listOfServings.append(serving)
-                
-            # calories are the 6th element of children list in itemHeader
+            newsoup = BeautifulSoup(newpage.content, 'html.parser') 
+            # tblFacts is id where the text we want is stored
+            itemHeader = newsoup.find(id="tblFacts") 
+            #calories are the 6th element of children list in itemHeader
             calories = list(itemHeader.children)[5].get_text() 
-            # find digits in the string calories 
+            #find digits in the string calories 
             # https://stackoverflow.com/questions/4289331/python-extract-numbers-from-a-string
-            caloriesNumber = re.findall(r'\d+', calories)
-            caloriesNumber = caloriesNumber[0]
-            caloriesNumber = float(caloriesNumber)
-            caloriesPerServing = round(caloriesNumber/servingNumber, 2)
-            listOfCalories.append(caloriesPerServing) #we need to convert the list of size 1 we get from re.findall to just a string value
-            
-            # time to add protein
+            caloriesNumber = re.findall(r'\d+', calories) 
+            listOfCalories.append(caloriesNumber[0]) #we need to convert the list of size 1 we get from re.findall to just a string value
+
+            #time to add protein
             itemNutrition = newsoup.find(id="tblNutritionDetails") #id for nutrition table
             nutritionLines = itemNutrition.select('td') #select all the table tags with info
             protein = nutritionLines[18].get_text()  #get the text from the 19th element which has protein
             proteinNumber = protein[protein.index('n')+2: protein.index('g')] #
-            proteinNumber = float(proteinNumber)
-            proteinPerServing = round(proteinNumber/servingNumber, 2)
-            listOfProtein.append(proteinPerServing)     
+            listOfProtein.append(proteinNumber)
+    
+    
 
+    
     menuList = menuList.select("li")
 
     # converts menuList from list <li> tags and html code to string
@@ -75,7 +82,7 @@ def oneMeal(meal, hall):
     # splits the string 
     tempListOfItems = stringMenuList.split("\n")
 
-    if len(tempListOfItems) > 1:
+    if tempListOfItems != []:
         # replaces the unicode spaces with string spaces and adds item and price
         # to listOfItemsAndPrices
         for item in tempListOfItems:
@@ -84,26 +91,17 @@ def oneMeal(meal, hall):
             else:
                 item = item.replace('\xa0',' ')
                 listOfItemsAndPrices.append(item)
-
-        # replaces the unicode spaces with string spaces in listOfServings
-        for serving in listOfServings:
-            serving = serving.replace('\xa0',' ')
-            serving = serving[serving.index("e  ") + 1:]
-            serving = serving.strip()
-            editedListOfServings.append(serving)
                 
         size = len(listOfItems)
 
         # adds only prices to listOfPrices
         for item in listOfItemsAndPrices:
             if "$" in item:
-                price = item[item.index("$"):]
+                price = item[item.index("$") + 1:]
                 price = price[:price.index(")")]
                 listOfPrices.append(price)
            # else:
                 # listOfPrices.append("N/A")
-        print(listOfPrices)
-
         # adds only items to listOfItems
         for item in listOfItemsAndPrices:
             if "$" in item:
@@ -114,9 +112,7 @@ def oneMeal(meal, hall):
                # listOfItems.append(item)
         #creating the third column, calories per dollar
         for x in range(len(listOfCalories)):
-            price = listOfPrices[x]
-            price = price[price.index("$") + 1:]
-            a = round(float(listOfCalories[x])/ float(price))
+            a = round(float(listOfCalories[x])/ float(listOfPrices[x]))
             listOfCaloriesPerDollar.append(a)
                 
         # creates a data frame (spreadsheet) with the items in the left column
@@ -125,23 +121,22 @@ def oneMeal(meal, hall):
         data = pd.DataFrame({
                 "item":listOfItems,
                 "price":listOfPrices,
-                "serving":editedListOfServings,
-                "caloriesPerServing":listOfCalories,
+                "calories":listOfCalories,
                 "caloriesPerDollar":listOfCaloriesPerDollar,
-                "proteinPerServing":listOfProtein
+                "protein":listOfProtein
             })
 
         # extracts the prices per item so that we can find the average price
-        # price = data["price"].str.extract("(?P<price_num>\d+.\d+)")
-        # data["price"] = price.astype('float64')
+        price = data["price"].str.extract("(?P<price_num>\d+.\d+)")
+        data["price"] = price.astype('float64')
         
         #averageDailyPrice = round(data["price"].mean(), 2)
         #caloriesPerDollar = data["caloriesPerDollar"].str.extract("(?P<price_num>\d+.\d+)")
         #data["caloriesPerDollar"] = caloriesPerDollar.astype('float64')
         
-        data_ascending = data.sort_values('caloriesPerDollar')
+        # data_ascending = data.sort_values('caloriesPerDollar')
         
-        return data_ascending
+        return data
 
     else:
         return
@@ -149,9 +144,6 @@ def oneMeal(meal, hall):
 
 
    
-
-
-              
 
 
               
