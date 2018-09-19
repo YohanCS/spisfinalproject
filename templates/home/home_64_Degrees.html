@@ -4,11 +4,12 @@
 
 {% block content %}
     <h1>64 Degrees - Revelle College</h1>
-    <br>
+	<h3> Please note that due to rendering times and because this website is free, heroku has a 30 sec timeout</h3>    <br>
     <form action="/result_64">
         Specify Breakfast, Lunch, or Dinner: <br>
-        <input type="text" name="meal" value="Lunch">
-        <input type="submit" value="Submit">
+        <input type="submit" name="meal" value="Breakfast">
+        <input type="submit" name="meal" value="Lunch">
+        <input type="submit" name="meal" value="Dinner">  
     </form>
 	<br>
     <img src="{{ Dininghalls }}" alt= "Enjoy Your Meal">
